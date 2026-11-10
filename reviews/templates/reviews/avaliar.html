@@ -1,0 +1,43 @@
+{% extends "reviews/base.html" %}
+{% block title %}Analisar avaliação — CompraSense{% endblock %}
+{% block content %}
+<section class="container page-section">
+  <div class="page-heading"><p class="eyebrow">DA SUA EXPERIÊNCIA PARA UMA NOVA LEITURA</p><h1>Analisar avaliação<span class="accent">.</span></h1><p class="muted">Olá, {{ user.get_short_name|default:user.username }}. Como foi sua última compra?</p></div>
+  <div class="analysis-layout">
+    <div class="card">
+      <div class="card-heading"><h2>Conte o que aconteceu</h2><span class="small muted">01 / Comentário</span></div>
+      {% if erro %}<div class="notice notice-error" role="alert"><strong>Não foi possível concluir a análise.</strong><br>{{ erro }} Seu comentário foi mantido para uma nova tentativa.</div>{% endif %}
+      {% if mensagem %}<p class="notice" role="status">{{ mensagem }}</p>{% endif %}
+      {% if form.non_field_errors %}<div class="notice notice-error" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+      <form method="post" action="{% url 'avaliar' %}" class="stack-form" data-loading-form>
+        {% csrf_token %}
+        <div class="field">
+          <label for="{{ form.comentario.id_for_label }}">{{ form.comentario.label }}</label>
+          {{ form.comentario }}
+          <div class="field-meta"><span id="comentario-ajuda">De 5 a 1.000 caracteres. Evite dados pessoais.</span><span data-character-count aria-live="off" hidden>0 / 1.000</span></div>
+          {% if form.comentario.help_text %}<p class="small muted">{{ form.comentario.help_text }}</p>{% endif %}
+          {% if form.comentario.errors %}<div id="comentario-erros" class="field-errors" role="alert">{{ form.comentario.errors }}</div>{% endif %}
+        </div>
+        <button type="submit" class="button" data-submit-button data-loading-label="Analisando…">Analisar sentimento <span aria-hidden="true">↗</span></button>
+        <p class="submit-status small muted" data-submit-status role="status" hidden>Estamos analisando seu comentário. Isso pode levar alguns segundos.</p>
+      </form>
+    </div>
+    <aside class="card result-card" aria-labelledby="resultado-titulo">
+      <div class="card-heading"><h2 id="resultado-titulo">Sua análise</h2><span class="small muted">02 / Resultado</span></div>
+      {% if resultado %}
+        <div class="result-content" role="status">
+          <p class="eyebrow">SENTIMENTO IDENTIFICADO</p>
+          {% if resultado.sentimento == 'Positivo' %}<p class="sentiment sentiment-positive sentiment-large">☺ Positivo</p>{% elif resultado.sentimento == 'Neutro' %}<p class="sentiment sentiment-neutral sentiment-large">◉ Neutro</p>{% elif resultado.sentimento == 'Negativo' %}<p class="sentiment sentiment-negative sentiment-large">☹ Negativo</p>{% else %}<p class="sentiment sentiment-neutral sentiment-large">{{ resultado.sentimento }}</p>{% endif %}
+          <dl class="confidence"><dt>Confiança do modelo</dt><dd>{{ resultado.confianca_percentual|floatformat:1 }}<span>%</span></dd></dl>
+          <p class="small muted">Esta pontuação expressa a confiança do modelo e não é uma garantia de acerto.</p>
+          <p class="saved-note">✓ Avaliação salva no seu histórico.</p>
+        </div>
+      {% else %}
+        <div class="empty-result"><span class="empty-icon" aria-hidden="true">◎</span><h3>Uma nova leitura começa aqui.</h3><p>Envie seu comentário para ver o sentimento identificado e a confiança do modelo.</p></div>
+      {% endif %}
+      <a class="text-link result-history" href="{% url 'historico' %}">Consultar meu histórico <span aria-hidden="true">↗</span></a>
+    </aside>
+  </div>
+  <p class="model-note">Dica: descreva uma experiência real de compra. Comentários com contexto ajudam a interpretar o resultado.</p>
+</section>
+{% endblock %}

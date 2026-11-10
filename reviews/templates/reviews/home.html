@@ -1,0 +1,34 @@
+{% extends "reviews/base.html" %}
+{% block content %}
+<section class="hero container">
+  <div class="hero-copy">
+    <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> INTELIGÊNCIA ARTIFICIAL PARA OUVIR MELHOR</p>
+    <h1>Cada avaliação<br>tem um <em>sentimento.</em></h1>
+    <p class="lead">Entenda o que existe por trás de uma experiência de compra. Transforme comentários em uma leitura positiva, neutra ou negativa com inteligência artificial.</p>
+    <div class="hero-actions">
+      <a class="button" href="{% url 'avaliar' %}">Analisar minha avaliação <span aria-hidden="true">↗</span></a>
+      <a class="text-link" href="#como-funciona">Como funciona <span aria-hidden="true">↓</span></a>
+    </div>
+    <p class="muted small">Escreva, analise e consulte seu histórico em um só lugar.</p>
+  </div>
+  <div class="demo-panel" aria-label="Exemplo ilustrativo de análise">
+    <div class="demo-top"><span class="eyebrow">UMA COMPRA, UMA HISTÓRIA</span><span class="demo-badge">Exemplo ilustrativo</span></div>
+    <div class="quote-mark" aria-hidden="true">“</div>
+    <blockquote>O produto chegou antes do prazo e o atendimento foi excelente!</blockquote>
+    <div class="demo-divider"><span>Uma possível leitura da IA</span><span aria-hidden="true">↘</span></div>
+    <div class="demo-result"><span class="sentiment sentiment-positive">☺ Positivo</span><span class="muted small">Experiência de compra</span></div>
+    <p class="small muted">A classificação real depende do modelo e pode variar.</p>
+  </div>
+</section>
+<section class="how-section" id="como-funciona" aria-labelledby="como-titulo">
+  <div class="container">
+    <div class="section-heading"><div><p class="eyebrow">DO COMENTÁRIO À COMPREENSÃO</p><h2 id="como-titulo">Simples, do começo ao resultado.</h2></div><p class="muted">Três passos para olhar sua compra<br>por outra perspectiva.</p></div>
+    <div class="steps">
+      <article><span class="step-number">01 /</span><h3>Conte sua experiência</h3><p>Entre na sua conta e escreva sobre o produto, a entrega ou o atendimento.</p></article>
+      <article><span class="step-number">02 /</span><h3>Conheça o sentimento</h3><p>Receba a classificação do comentário e a pontuação de confiança do modelo.</p></article>
+      <article><span class="step-number">03 /</span><h3>Revisite suas avaliações</h3><p>Consulte seus comentários e resultados no histórico da sua conta.</p></article>
+    </div>
+    <p class="model-note">A IA é uma ferramenta de apoio: pode interpretar um comentário incorretamente. A confiança do modelo não garante o acerto.</p>
+  </div>
+</section>
+{% endblock %}

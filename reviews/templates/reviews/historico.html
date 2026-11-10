@@ -1,0 +1,21 @@
+{% extends "reviews/base.html" %}
+{% block title %}Meu histórico — CompraSense{% endblock %}
+{% block content %}
+<section class="container page-section">
+  <div class="section-heading"><div class="page-heading"><p class="eyebrow">SUAS EXPERIÊNCIAS, REUNIDAS</p><h1>Meu histórico<span class="accent">.</span></h1><p class="muted">Revisite suas avaliações e os sentimentos identificados.</p></div><a class="button" href="{% url 'avaliar' %}">Nova análise <span aria-hidden="true">+</span></a></div>
+  <div class="history-list">
+    {% for item in avaliacoes %}
+      <article class="card history-card">
+        <div class="history-top"><time class="small muted" datetime="{{ item.criado_em|date:'c' }}">{{ item.criado_em|date:"d/m/Y" }} às {{ item.criado_em|date:"H:i" }}</time>
+          {% if item.sentimento == 'positive' %}<span class="sentiment sentiment-positive">☺ Positivo</span>{% elif item.sentimento == 'neutral' %}<span class="sentiment sentiment-neutral">◉ Neutro</span>{% elif item.sentimento == 'negative' %}<span class="sentiment sentiment-negative">☹ Negativo</span>{% else %}<span class="sentiment sentiment-neutral">{{ item.sentimento }}</span>{% endif %}
+        </div>
+        <p class="review-text">{{ item.comentario }}</p>
+        <p class="small muted">Pontuação de confiança: <strong>{{ item.confianca|floatformat:2 }}</strong> <span>(escala de 0 a 1)</span></p>
+      </article>
+    {% empty %}
+      <div class="card empty-history"><span class="empty-icon" aria-hidden="true">≡</span><h2>Sua primeira análise está por vir.</h2><p class="muted">Quando você analisar uma avaliação, ela aparecerá aqui.</p><a class="button" href="{% url 'avaliar' %}">Analisar minha primeira avaliação <span aria-hidden="true">↗</span></a></div>
+    {% endfor %}
+  </div>
+  <p class="model-note">A confiança do modelo não garante o acerto da classificação. Considere sempre o contexto do comentário.</p>
+</section>
+{% endblock %}

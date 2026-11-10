@@ -1,0 +1,26 @@
+{% extends "reviews/base.html" %}
+{% block title %}Entrar — CompraSense{% endblock %}
+{% block content %}
+<section class="container login-layout">
+  <div class="login-intro">
+    <p class="eyebrow">BEM-VINDO AO COMPRASENSE</p>
+    <h1>Um espaço para<br>entender sua<br><em>experiência.</em></h1>
+    <p class="lead">Entre para analisar avaliações de compra e manter seus resultados organizados.</p>
+    <div class="sentiment-list" aria-label="Sentimentos identificados"><span class="sentiment sentiment-positive">☺ Positivo</span><span class="sentiment sentiment-neutral">◉ Neutro</span><span class="sentiment sentiment-negative">☹ Negativo</span></div>
+  </div>
+  <div class="card login-card">
+    <p class="eyebrow">SUA CONTA</p><h2>Que bom ter você aqui.</h2><p class="muted">Use suas credenciais para continuar.</p>
+    {% if form.non_field_errors %}<div class="notice notice-error" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+    {% if next and user.is_authenticated %}<p class="notice" role="status">Sua conta não tem acesso à página solicitada. Entre com uma conta que tenha permissão.</p>{% endif %}
+    <form method="post" action="{% url 'login' %}" class="stack-form" data-loading-form>
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
+      <div class="field"><label for="{{ form.username.id_for_label }}">Usuário</label>{{ form.username }}{% if form.username.errors %}<div class="field-errors" role="alert">{{ form.username.errors }}</div>{% endif %}</div>
+      <div class="field"><label for="{{ form.password.id_for_label }}">Senha</label>{{ form.password }}{% if form.password.errors %}<div class="field-errors" role="alert">{{ form.password.errors }}</div>{% endif %}</div>
+      <button type="submit" class="button button-full" data-submit-button data-loading-label="Entrando…">Entrar <span aria-hidden="true">↗</span></button>
+      <p class="submit-status small muted" data-submit-status role="status" hidden>Aguarde enquanto verificamos suas credenciais.</p>
+    </form>
+    <p class="login-help small">Ainda não tem acesso? Peça uma conta ao instrutor do minicurso.</p>
+  </div>
+</section>
+{% endblock %}

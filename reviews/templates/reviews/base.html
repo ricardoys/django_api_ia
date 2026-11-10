@@ -1,0 +1,52 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="CompraSense: análise de sentimentos de avaliações de compra. Projeto do minicurso TechWeek.">
+  <meta name="theme-color" content="#164e40">
+  <title>{% block title %}CompraSense — Entenda cada experiência{% endblock %}</title>
+  <link rel="icon" href="{% static 'reviews/img/favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'reviews/css/comprasense.css' %}">
+  <script src="{% static 'reviews/js/comprasense.js' %}" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+  <header class="site-header">
+    <nav class="container nav" aria-label="Navegação principal">
+      <a class="brand" href="{% url 'home' %}" aria-label="CompraSense — início">
+        <img src="{% static 'reviews/img/favicon.svg' %}" width="36" height="36" alt="">
+        <span>Compra<span class="brand-accent">Sense</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="{% url 'home' %}" {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}>Início</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'avaliar' %}" {% if request.resolver_match.url_name == 'avaliar' %}aria-current="page"{% endif %}>Analisar</a>
+          <a href="{% url 'historico' %}" {% if request.resolver_match.url_name == 'historico' %}aria-current="page"{% endif %}>Meu histórico</a>
+          <form method="post" action="{% url 'logout' %}" class="logout-form">
+            {% csrf_token %}
+            <button class="button button-small button-outline" type="submit">Sair</button>
+          </form>
+        {% else %}
+          <a class="button button-small" href="{% url 'login' %}">Entrar <span aria-hidden="true">↗</span></a>
+        {% endif %}
+      </div>
+    </nav>
+  </header>
+  <main id="conteudo" class="main-content" tabindex="-1">
+    {% if messages %}
+      <div class="container messages" aria-live="polite">
+        {% for message in messages %}<p class="notice">{{ message }}</p>{% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <p><strong>CompraSense</strong> <span>Uma nova leitura da sua experiência.</span></p>
+      <p>Projeto educacional <span aria-hidden="true">·</span> TechWeek 2026</p>
+    </div>
+  </footer>
+</body>
+</html>
